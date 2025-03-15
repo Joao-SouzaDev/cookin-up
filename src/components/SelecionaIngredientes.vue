@@ -4,6 +4,7 @@ import type ICategoria from '@/interfaces/ICategoria';
 import CardCategoria from './CardCategoria.vue';
 import BotaPrincipal from './BotaPrincipal.vue';
 export default {
+    name: 'SelecionaIngredientes',
     data() {
         return {
             categorias: [] as ICategoria[]

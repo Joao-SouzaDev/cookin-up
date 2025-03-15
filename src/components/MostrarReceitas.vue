@@ -3,15 +3,23 @@ import type IReceitas from '@/interfaces/IReceitas';
 import { obterReceitas } from '@/http';
 import CardReceita from './CardReceita.vue';
 import BotaPrincipal from './BotaPrincipal.vue';
+import type { PropType } from 'vue';
+import { filtraIngredientesEmComum } from '@/operacoes/listas';
 export default {
     data() {
         return {
             receitasEncontradas: [] as IReceitas[]
         }
     },
+    props:{
+        ingredientes: {type: Array as PropType<string[]>,required: true}
+    },
     async created() {
         const receitas = await obterReceitas();
-        this.receitasEncontradas = receitas.slice(0,8)
+        this.receitasEncontradas = receitas.filter((receita) => {
+            const receitasPossiveis = filtraIngredientesEmComum(receita.ingredientes, this.ingredientes);
+            return receitasPossiveis;
+        })
     },
     components: {
         CardReceita, BotaPrincipal
