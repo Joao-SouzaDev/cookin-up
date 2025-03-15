@@ -13,7 +13,8 @@ export default {
     },
     components: {
         CardCategoria
-    }
+    },
+    emits: ['adicionarIngrediente','removerIngrediente']
 }
 </script>
 
@@ -23,7 +24,7 @@ export default {
         <p class="paragrafo-lg instrucoes">Selecione abaixo os ingredientes que você quer usar nesta receita:</p>
         <ul class="categorias">
             <li v-for="categoria in categorias" :key="categoria.nome">
-                <CardCategoria :categoria="categoria"/>
+                <CardCategoria :categoria="categoria" @adicionar-ingrediente="$emit('adicionarIngrediente',$event)" @remover-ingrediente="$emit('removerIngrediente',$event)"/>
             </li>
         </ul>
         <p class="paragrafo dica">

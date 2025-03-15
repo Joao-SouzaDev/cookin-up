@@ -1,35 +1,38 @@
 <script lang="ts">
+import type { PropType } from 'vue';
 import SelecionaIngredientes from './SelecionaIngredientes.vue';
+import SuaLista from './SuaLista.vue';
 import Tag from './TagTexto.vue';
+import BotaPrincipal from './BotaPrincipal.vue';
+import Rodape from './Rodape.vue';
 
 export default {
     data(vm) {
         return{
-            ingredientes: ['Alho', 'Manteiga','Orégano']
+            ingredientes: [] as string[]
         }
     },
-    components: {SelecionaIngredientes ,Tag}
+    components: {SelecionaIngredientes ,Tag,SuaLista,BotaPrincipal,Rodape},
+    methods: {
+      adicionarIngrediente(ingrediente:string) {
+        if(!this.ingredientes.find(p => p == ingrediente)){
+          this.ingredientes.push(ingrediente)
+        }
+      },
+      removerIngrediente(ingrediente:string) {
+        this.ingredientes = this.ingredientes.filter(p => p !== ingrediente);
+      }
+    }
 }
 </script>
 
 <template>
     <main class="conteudo-principal">
-        <section>
-            <span class="subtitulo-lg sua-lista-text">
-                Sua Lista:
-            </span>
-            <ul v-if="ingredientes.length != 0" class="ingredientes-sua-lista">
-                <li v-for="ingrediente in ingredientes" :key="ingrediente">
-                  <Tag :texto="ingrediente" ativa/>
-                </li>
-            </ul>
-            <p v-else class="paragrafo lista-vazia">
-                <img src="../assets/imagens/icones/lista-vazia.svg" alt="Icone de pesqusia">
-                Sua lista está vazia. Seleciona itens para iniciar
-            </p>
-        </section>
-        <SelecionaIngredientes />
+        <SuaLista :ingredientes="ingredientes"/>
+        <SelecionaIngredientes  @adicionar-ingrediente="adicionarIngrediente($event)" @remover-ingrediente="removerIngrediente($event)"/>
+        <BotaPrincipal :texto="'Buscar Receitas!'"/>
     </main>
+    <Rodape />
 </template>
 
 <style scoped>
